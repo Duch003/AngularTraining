@@ -5,29 +5,35 @@ import { Location } from '@angular/common';
 import { HeroService } from '../hero.service';
 
 @Component({
-  selector: 'app-hero-details',
-  templateUrl: './hero-details.component.html',
-  styleUrls: ['./hero-details.component.css']
+    selector: 'app-hero-details',
+    templateUrl: './hero-details.component.html',
+    styleUrls: ['./hero-details.component.css']
 })
 export class HeroDetailsComponent implements OnInit {
 
-  hero: Hero;
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private heroService: HeroService,
-    private location: Location
-  ) { }
+    hero: Hero;
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private heroService: HeroService,
+        private location: Location
+    ) { }
 
-  ngOnInit(): void {
-    this.getHero();
-  }
+    ngOnInit(): void {
+        this.getHero();
+    }
 
-  getHero() {
-    const id = +this.activatedRoute.snapshot.paramMap.get('id');
-    this.heroService.getHero(id).subscribe(hero => this.hero = hero);
-  }
+    getHero() {
+        const id = +this.activatedRoute.snapshot.paramMap.get('id');
+        this.heroService.getHero(id).subscribe(hero => this.hero = hero);
+    }
 
-  goBack(): void {
-    this.location.back();
-  }
+    goBack(): void {
+        this.location.back();
+    }
+
+    save(): void {
+        this.heroService
+            .updateHero(this.hero)
+            .subscribe(() => this.goBack())
+    }
 }
